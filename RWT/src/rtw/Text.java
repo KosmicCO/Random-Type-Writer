@@ -10,7 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -22,7 +24,6 @@ public class Text {
     private String text;
     private File combos;
     private int level;
-    private FileWriter writer;
     
     public Text(int l, String f) throws FileNotFoundException{
         
@@ -30,16 +31,16 @@ public class Text {
         
     }
     
+    public Text(int l, File f, String seed) throws FileNotFoundException{
+        
+        level = l;
+        combos = f;
+        text = seed;
+    }
+    
     public int getLevel(){
         
         return level;
-    }
-    
-    public String getRandCombo(){
-        
-        int size = text.length() - level + 1;
-        int rand = (int) (Math.random() * size);
-        return text.substring(rand, rand + level + 1);
     }
     
     public Text(int l, File f) throws FileNotFoundException{
@@ -48,6 +49,14 @@ public class Text {
         read.useDelimiter("\\z");
         text = read.next();
         level = l;
+        combos = new File("Combos");
+    }
+    
+    public String getRandCombo(){
+        
+        int size = text.length() - level + 1;
+        int rand = (int) (Math.random() * size);
+        return text.substring(rand, rand + level);
     }
     
     public File getCombos(){
@@ -55,14 +64,48 @@ public class Text {
         return combos;
     }
     
-    private void writeComboFile() throws IOException{
+    public void writeComboFile() throws IOException{
         
-        List<String> coms = new ArrayList();
+        Map<String, String> coms = new HashMap();
         int sz = text.length() - level + 1;
-        writer = new FileWriter(combos);
+        
+        
+        for (int i = 0; i < sz; i++) {
+            
+            String s = text.substring(i, i + level);
+            
+            if(!coms.containsKey(s)){
+                
+                coms.put(s, "" + text.charAt(i + level - 1));
+            }else{
+                
+                coms.replace(s, coms.get(s) + text.charAt(i + level - 1));
+            }
+        }
+        
+        for(String s : coms.keySet()){
+            
+            System.out.println(s);
+        }
+        
+        FileWriter writer = new FileWriter(combos);
+        
+        for (String s : coms.keySet()) {
+            
+            List<Character> lc = new ArrayList();
+            
+            for(char c : coms.get(s).toCharArray()){
+                
+                lc.add(c);
+            }
+            
+            writeCombo(s, lc, writer);
+        }
+        
+        writer.close();
     }
     
-    private void writeCombo(String cm, List<Character> ac) throws IOException{
+    private void writeCombo(String cm, List<Character> ac, FileWriter writer) throws IOException{
         
         int chs = ac.size();
         writer.write("~" + cm + " " + chs + " ");
