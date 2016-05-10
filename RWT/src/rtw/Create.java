@@ -18,10 +18,20 @@ public class Create {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException {
-        Text t=new Text(5, new File("Text"));
+        Text t=new Text(8, new File("Text"));
         RandTextGen rand=new RandTextGen(t);
         
-        System.out.println(rand.write(1000));
+        String story = rand.write(1000);
+        String s = "";
+        
+        for (int i = 0; i < story.length() / 100; i++) {
+            
+            s += story.substring(i * 100, (i + 1) * 100) + "\n";
+            story = story.substring((i + 1) * 100);
+        }
+        
+        s += story;
+        System.out.println(s);
     }
     
 }

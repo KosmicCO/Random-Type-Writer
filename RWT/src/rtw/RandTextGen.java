@@ -33,9 +33,19 @@ public class RandTextGen {
             
             c = getRandChar(s);
             
+            if(count % 50 == 0){
+                
+                System.out.println(count);
+            }
+            
             if(c == '_'){
                 
                 c = ' ';
+            }
+            
+            if(c == '^'){
+                
+                c = '\n';
             }
             
             sto += c;
@@ -51,6 +61,7 @@ public class RandTextGen {
         Scanner reader = new Scanner(text.getCombos());
         int h = Integer.parseInt(reader.next());
         combo = combo.replace(' ', '_');
+        combo = combo.replace('\n', '^');
         
         try {
 

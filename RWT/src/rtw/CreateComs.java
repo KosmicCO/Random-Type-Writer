@@ -21,7 +21,7 @@ public class CreateComs {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         
-        Text t = new Text(5, new File("Text"));
+        Text t = new Text(8, new File("Text"));
         t.writeComboFile();
     }
 }

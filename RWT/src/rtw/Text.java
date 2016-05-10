@@ -46,7 +46,7 @@ public class Text {
     public Text(int l, File f) throws FileNotFoundException{
         
         Scanner read = new Scanner(f);
-        read.useDelimiter("\\z");
+        read.useDelimiter("\\Z");
         text = read.next();
         level = l;
         combos = new File("Combos");
@@ -74,6 +74,7 @@ public class Text {
             
             String s = text.substring(i, i + level);
             char c = text.charAt(i + level) == ' ' ? '_' : text.charAt(i + level);
+            c = c == '\n' ? '^' : c;
             
             if(!coms.containsKey(s)){
                 
@@ -107,6 +108,7 @@ public class Text {
         
         int chs = ac.size();
         cm = cm.replace(' ', '_');
+        cm = cm.replace('\n', '^');
         
         writer.write("~" + cm + " " + chs + " ");
         
