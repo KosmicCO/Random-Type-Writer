@@ -67,28 +67,26 @@ public class Text {
     public void writeComboFile() throws IOException{
         
         Map<String, String> coms = new HashMap();
-        int sz = text.length() - level + 1;
+        int sz = text.length() - level;
         
         
         for (int i = 0; i < sz; i++) {
             
             String s = text.substring(i, i + level);
+            char c = text.charAt(i + level) == ' ' ? '_' : text.charAt(i + level);
             
             if(!coms.containsKey(s)){
                 
-                coms.put(s, "" + text.charAt(i + level - 1));
+                coms.put(s, "" + c);
             }else{
                 
-                coms.replace(s, coms.get(s) + text.charAt(i + level - 1));
+                coms.replace(s, coms.get(s) + c);
             }
         }
         
-        for(String s : coms.keySet()){
-            
-            System.out.println(s);
-        }
-        
         FileWriter writer = new FileWriter(combos);
+        
+        writer.write("" + coms.size() + "\n");
         
         for (String s : coms.keySet()) {
             
@@ -108,6 +106,8 @@ public class Text {
     private void writeCombo(String cm, List<Character> ac, FileWriter writer) throws IOException{
         
         int chs = ac.size();
+        cm = cm.replace(' ', '_');
+        
         writer.write("~" + cm + " " + chs + " ");
         
         for (Character c : ac) {
